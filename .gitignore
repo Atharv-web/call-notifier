@@ -1,0 +1,64 @@
+# Android and Gradle build output
+.gradle/
+.kotlin/
+**/build/
+local.properties
+.cxx/
+.externalNativeBuild/
+captures/
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# .NET build and package output
+**/bin/
+**/obj/
+artifacts/
+TestResults/
+*.nupkg
+*.snupkg
+*.publish.xml
+*.pubxml.user
+
+# Local editor settings
+.idea/
+.vs/
+.vscode/
+*.iml
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Secrets, pairing data, and signing keys
+.env
+.env.*
+!.env.example
+secrets/
+runtime/
+appsettings.Local.json
+appsettings.*.Local.json
+keystore.properties
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.pem
+*.key
+
+# Logs, temporary files, and OS files
+logs/
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Keep the Gradle wrapper JAR when it is added.
+!gradle-wrapper.jar
+README.md
