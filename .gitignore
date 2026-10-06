@@ -11,15 +11,22 @@ captures/
 *.ap_
 *.dex
 
-# .NET build and package output
-**/bin/
-**/obj/
+# Python build output, caches, and virtual environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+dist/
+*.egg-info/
+.eggs/
 artifacts/
-TestResults/
-*.nupkg
-*.snupkg
-*.publish.xml
-*.pubxml.user
 
 # Local editor settings
 .idea/
@@ -37,8 +44,6 @@ TestResults/
 !.env.example
 secrets/
 runtime/
-appsettings.Local.json
-appsettings.*.Local.json
 keystore.properties
 *.jks
 *.keystore
