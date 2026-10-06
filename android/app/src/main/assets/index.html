@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>call-notifier</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 24px; font: 17px/1.5 system-ui, sans-serif; background: #f3f5f8; color: #17243b; }
+    main { max-width: 480px; margin: 32px auto; }
+    section { background: white; padding: 24px; border-radius: 16px; }
+    h1 { font-size: 28px; }
+    button { padding: 12px 18px; border: 0; border-radius: 8px; font: inherit; background: #2457ce; color: white; cursor: pointer; }
+    button:hover { background: #1944a7; }
+    button:active { transform: translateY(1px); }
+    button:focus-visible { outline: 3px solid #17243b; outline-offset: 3px; }
+    label { display: block; margin: 16px 0; }
+    input { display: block; width: 100%; padding: 10px; font: inherit; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>call-notifier</h1>
+    <p>Get a laptop alert when your phone rings.</p>
+    <section aria-label="Connection status">
+      <p id="status" role="status">Open this app on your phone to detect calls.</p>
+      <p id="permission">Phone permission: unknown</p>
+      <button type="button" id="allow">Allow call detection</button>
+      <form id="settings">
+        <label>Laptop IPv4 address <input id="host" placeholder="192.168.43.100" required></label>
+        <label>Pairing token <input id="token" type="password" minlength="16" maxlength="128" required></label>
+        <button type="submit">Save connection</button>
+      </form>
+      <p id="saved" role="status"></p>
+      <button type="button" id="test">Send test alert</button>
+      <p id="delivery" role="status"></p>
+      <p id="last"></p>
+    </section>
+  </main>
+  <script>
+    const bridge = window.Phone;
+    if (bridge) {
+      const config = JSON.parse(bridge.config());
+      document.getElementById('host').value = config.host;
+      document.getElementById('token').value = config.token;
+    }
+    document.getElementById('allow').onclick = () => {
+      if (bridge) bridge.permission();
+    };
+    document.getElementById('settings').onsubmit = event => {
+      event.preventDefault();
+      const ok = bridge && bridge.save(document.getElementById('host').value.trim(), document.getElementById('token').value.trim());
+      document.getElementById('saved').textContent = ok ? 'Connection saved.' : 'Use the phone app, a valid IPv4 address, and the laptop token.';
+    };
+    document.getElementById('test').onclick = () => {
+      if (bridge) bridge.test();
+      else document.getElementById('delivery').textContent = 'Open this screen in the phone app to send an alert.';
+    };
+    window.updateStatus = data => {
+      document.getElementById('permission').textContent = data.permission ? 'Call detection allowed.' : 'Allow phone permission to detect calls.';
+      document.getElementById('status').textContent = data.state === 'RINGING' ? 'Phone is ringing' : 'Waiting for a call';
+      document.getElementById('delivery').textContent = data.delivery;
+      document.getElementById('last').textContent = data.lastRing ? 'Last ringing event: ' + new Date(data.lastRing).toLocaleString() : 'No call detected yet.';
+    };
+  </script>
+</body>
+</html>
