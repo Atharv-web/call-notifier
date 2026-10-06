@@ -1,0 +1,2 @@
+# Native Windows notifications. Install later when needed.
+windows-toasts==1.3.1
