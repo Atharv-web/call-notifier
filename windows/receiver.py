@@ -12,6 +12,7 @@ import time
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--console", action="store_true", help="Print alerts without the notification library.")
+    parser.add_argument("--quiet", action="store_true", help="Do not print the pairing token or setup help.")
     args = parser.parse_args()
     toaster = None
     if not args.console:
@@ -27,9 +28,10 @@ def main() -> None:
         token_path.write_text(secrets.token_hex(16), encoding="utf-8")
     token = token_path.read_text(encoding="utf-8").strip()
     print("call-notifier: listening on UDP port 45832")
-    print("Find the laptop hotspot IPv4 address with ipconfig.")
-    print(f"Enter this pairing token on your phone: {token}")
-    print("Keep this window open. Press Ctrl+C to stop.")
+    if not args.quiet:
+        print("Find the laptop hotspot IPv4 address with ipconfig.")
+        print(f"Enter this pairing token on your phone: {token}")
+        print("Keep this window open. Press Ctrl+C to stop.")
     seen = {}
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as receiver:
         receiver.bind(("0.0.0.0", 45832))
