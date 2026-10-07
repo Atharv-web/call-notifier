@@ -66,5 +66,4 @@ Desktop.ini
 
 # Keep the Gradle wrapper JAR when it is added.
 !gradle-wrapper.jar
-README.md
-PLAN.md
+*.md
