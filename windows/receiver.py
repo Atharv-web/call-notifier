@@ -33,9 +33,13 @@ def main() -> None:
     seen = {}
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as receiver:
         receiver.bind(("0.0.0.0", 45832))
+        receiver.settimeout(1.0)
         try:
             while True:
-                raw, _ = receiver.recvfrom(2048)
+                try:
+                    raw, _ = receiver.recvfrom(2048)
+                except socket.timeout:
+                    continue
                 now = time.time()
                 seen = {key: stamp for key, stamp in seen.items() if now - stamp < 60}
                 try:
